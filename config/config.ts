@@ -79,6 +79,13 @@ export default defineConfig({
               component: './ListTableList',
             },
             {
+              path: '/module',
+              name: 'list.module-list',
+              icon: 'table',
+              component: './Module/module',
+
+            },
+            {
               component: './404',
             },
           ],
