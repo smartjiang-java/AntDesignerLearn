@@ -92,6 +92,12 @@ export default defineConfig({
               component: './TestUnitTableList',
             },
             {
+              name: '测试用例',
+                  icon: 'smile',
+                  path: '/test/cases',
+                  component: './demo/cases',
+            },
+            {
               component: './404',
             },
           ],
