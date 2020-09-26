@@ -86,6 +86,12 @@ export default defineConfig({
 
             },
             {
+              name: 'list.TestUnitTableList-list',
+              icon: 'table',
+              path: '/testUnitList',
+              component: './TestUnitTableList',
+            },
+            {
               component: './404',
             },
           ],
