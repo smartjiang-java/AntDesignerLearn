@@ -2,7 +2,6 @@ import React from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import { Card, Alert, Typography } from 'antd';
 import styles from './Welcome.less';
-
 const CodePreview: React.FC<{}> = ({ children }) => (
   <pre className={styles.pre}>
     <code>
@@ -10,6 +9,7 @@ const CodePreview: React.FC<{}> = ({ children }) => (
     </code>
   </pre>
 );
+
 
 export default (): React.ReactNode => (
   <PageContainer>
@@ -24,6 +24,7 @@ export default (): React.ReactNode => (
           marginBottom: 24,
         }}
       />
+
       <Typography.Text strong>
         高级表格{' '}
         <a href="https://protable.ant.design/" rel="noopener noreferrer" target="__blank">

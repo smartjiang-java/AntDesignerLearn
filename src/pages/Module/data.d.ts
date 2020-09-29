@@ -9,6 +9,7 @@ export interface ModuleListItem {
 }
 
 export interface ModuleListParams {
+  name: string;
   projectName?: string;
   moduleName?: string;
   desc?: string;
