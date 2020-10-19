@@ -1,4 +1,4 @@
-import {Button, Input, Popconfirm, Table, message, Select, Checkbox, Tooltip} from 'antd';
+import {Button, Input, Popconfirm, Table, message, Select, Checkbox, Tooltip, AutoComplete} from 'antd';
 import React, {FC, useState} from 'react';
 import styles from '../style.less';
 import {SelectValue} from "antd/es/select";
@@ -21,6 +21,18 @@ interface TableFormProps {
 }
 
 const {Option} = Select;
+
+//定义数据类型
+let options = [
+  {value: 'String'},
+  {value: 'boolean'},
+  {value: 'double',},
+  {value: 'float',},
+  {value: 'byte',},
+  {value: 'long',},
+  {value: 'short',},
+  {value: 'int',},
+];
 
 const TableForm: FC<TableFormProps> = ({value, onChange}) => {
   const [clickedCancel, setClickedCancel] = useState(false);
@@ -49,10 +61,11 @@ const TableForm: FC<TableFormProps> = ({value, onChange}) => {
   };
 
 //清空
-  const clean = (e: React.MouseEvent | React.KeyboardEvent, key: string) => {
-   /* e.preventDefault();*/
+  const clean = (e: SelectValue, key: string) => {
     const newData = data?.map((item) => ({...item}));
+    /* newData[0].*/
     const target = getRowByKey(key, newData);
+    console.log(target);
     if (target) {
       // 进入编辑状态时保存原始数据
       if (!target.editable) {
@@ -65,6 +78,7 @@ const TableForm: FC<TableFormProps> = ({value, onChange}) => {
   };
 
 
+  //新增参数行
   const newMember = () => {
     const newData = data?.map((item) => ({...item})) || [];
     newData.push({
@@ -72,16 +86,27 @@ const TableForm: FC<TableFormProps> = ({value, onChange}) => {
       name: '',
       worktype: 'String',
       department: '',
-      isRequired: true,
+      isRequired: false,
       remarks: '',
       editable: true,
-
     });
-
     setIndex(index + 1);
     setData(newData);
   };
 
+  //列表选择框
+  const rowSelection = {
+    onSelect: (record: any, selected: boolean, selectedRows: any) => {
+      console.log("onSelect", selectedRows);//所有选中的数据
+      //console.log(selectedRows[0].name + selectedRows[0].worktype +selectedRows[0].department);
+    },
+    onSelectAll: (selected: any, selectedRows: any) => {
+      console.log("onSelectAll", selectedRows);  //选中项数据
+      //console.log(selectedRows[0].name + selectedRows[0].worktype +selectedRows[0].department);
+    },
+  };
+
+  //删除参数行
   const remove = (key: string) => {
     const newData = data?.filter((item) => item.key !== key) as TableFormDateType[];
     setData(newData);
@@ -90,6 +115,7 @@ const TableForm: FC<TableFormProps> = ({value, onChange}) => {
     }
   };
 
+  //属性描述和备注输入时判断
   const handleFieldChange = (
     e: React.ChangeEvent<HTMLInputElement>,
     fieldName: string,
@@ -98,11 +124,16 @@ const TableForm: FC<TableFormProps> = ({value, onChange}) => {
     const newData = [...(data as TableFormDateType[])];
     const target = getRowByKey(key, newData);
     if (target) {
-      target[fieldName] = e.target.value;
+      if (e.target.value.length <= 20) {
+        target[fieldName] = e.target.value;
+      } else {
+        target[fieldName] = e.target.value.substring(0, 17) + "...";
+      }
       setData(newData);
     }
   };
 
+  //参数类型输入时进行修改
   const handleFieldChange2 = (
     e: SelectValue,
     fieldName: string,
@@ -112,6 +143,7 @@ const TableForm: FC<TableFormProps> = ({value, onChange}) => {
     const target = getRowByKey(key, newData);
     if (target) {
       target[fieldName] = e;
+      console.log(e);
       setData(newData);
     }
   };
@@ -160,30 +192,30 @@ const TableForm: FC<TableFormProps> = ({value, onChange}) => {
   };
 
   //取消
-/*  const cancel = (e: React.MouseEvent, key: string) => {
-      setClickedCancel(true);
-      e.preventDefault();
-    const newData = [...(data as TableFormDateType[])];
-      // 编辑前的原始数据
-      let cacheData: any[];
-      cacheData = newData.map((item) => {
-        if (item.key === key) {
-          if (cacheOriginData[key]) {
-            const originItem = {
-              ...item,
-              ...cacheOriginData[key],
-              editable: false,
-            };
-            delete cacheOriginData[key];
-            setCacheOriginData(cacheOriginData);
-            return originItem;
+  /*  const cancel = (e: React.MouseEvent, key: string) => {
+        setClickedCancel(true);
+        e.preventDefault();
+      const newData = [...(data as TableFormDateType[])];
+        // 编辑前的原始数据
+        let cacheData: any[];
+        cacheData = newData.map((item) => {
+          if (item.key === key) {
+            if (cacheOriginData[key]) {
+              const originItem = {
+                ...item,
+                ...cacheOriginData[key],
+                editable: false,
+              };
+              delete cacheOriginData[key];
+              setCacheOriginData(cacheOriginData);
+              return originItem;
+            }
           }
-        }
-        return item;
-      });
-      setData(cacheData);
-      setClickedCancel(false);
-    };*/
+          return item;
+        });
+        setData(cacheData);
+        setClickedCancel(false);
+      };*/
 
 
   const columns = [
@@ -191,18 +223,17 @@ const TableForm: FC<TableFormProps> = ({value, onChange}) => {
       title: '参数代码',
       dataIndex: 'name',
       key: 'name',
-      width: '20%',
+      width: '12%',
       render: (text: string, record: TableFormDateType) => {
         if (record.editable) {
           return (
             <Input
-              placeholder={'参数代码'}
+              placeholder={'请输入参数名称'}
               bordered={false}
               value={text}
               autoFocus
               onChange={(e) => handleFieldChange(e, 'name', record.key)}
               onKeyPress={(e) => handleKeyPress(e, record.key)}
-              /* placeholder="成员姓名"*/
             />
           );
         }
@@ -213,21 +244,31 @@ const TableForm: FC<TableFormProps> = ({value, onChange}) => {
       title: '参数类型',
       dataIndex: 'worktype',
       key: 'worktype',
-      width: '20%',
+      width: '10%',
       render: (text: string, record: TableFormDateType) => {
         if (record.editable) {
           return (
-            <Select
+            /*            <Select bordered={false} /!*placeholder={'请选择或者输入参数类型'}  mode={"tags"}*!/ style={{width:'40%'}}
+                                onChange={(e) => handleFieldChange2(e, 'worktype', record.key)}
+                        >
+                          {
+                            options.map(item =>
+                              <Select.Option value={item}>{}</Select.Option>)
+                          }
+                          .
+                        </Select>*/
+            <AutoComplete
+              style={{width: 100}}
+              placeholder="参数类型"
               bordered={false}
-              defaultValue="String"
-              onChange={(e) => handleFieldChange2(e, 'worktype', record.key)}>
-              <Option value="String">String</Option>
-              <Option value="long">long</Option>
-              <Option value="list">list</Option>
-              <Option value="map">map</Option>
-              <Option value="boolean">boolean</Option>
-              <Option value="int">int</Option>
-            </Select>
+              options={options}
+              onChange={(e) => handleFieldChange2(e, 'worktype', record.key)}
+              filterOption={(inputValue, option) => {
+                // @ts-ignore
+                const {value: value1} = option;
+                return value1.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1;
+              }}
+            />
           );
         }
         return text;
@@ -237,13 +278,13 @@ const TableForm: FC<TableFormProps> = ({value, onChange}) => {
       title: '属性描述',
       dataIndex: 'department',
       key: 'department',
-      /*width: '40%',*/
+      width: '25%',
       render: (text: string, record: TableFormDateType) => {
         if (record.editable) {
           return (
             <Tooltip placement="topLeft" title="最多显示20个字符，超出部分...显示">
               <Input
-                placeholder={'属性描述'}
+                placeholder={'请输入属性描述'}
                 bordered={false}
                 value={text}
                 onChange={(e) => handleFieldChange(e, 'department', record.key)}
@@ -258,14 +299,14 @@ const TableForm: FC<TableFormProps> = ({value, onChange}) => {
     {
       title: () => <div className={styles.params_title}>是否必填</div>,
       dataIndex: 'isRequired',
+      width: '8%',
       render: (text: string, record: TableFormDateType) => {
         if (record.editable) {
           return (
             <Checkbox
               defaultChecked={false}
               onChange={(e) => {
-                handleFieldChange3(e, 'isRequired', record.key);
-              }}
+                handleFieldChange3(e, 'isRequired', record.key);}}
               onKeyPress={(e) => handleKeyPress(e, record.key)}
             />
           );
@@ -277,13 +318,14 @@ const TableForm: FC<TableFormProps> = ({value, onChange}) => {
       title: '备注',
       dataIndex: 'remarks',
       key: 'remarks',
+      width: '25%',
       /*width: '40%',*/
       render: (text: string, record: TableFormDateType) => {
         if (record.editable) {
           return (
             <Tooltip placement="topLeft" title="最多显示20个字符，超出部分...显示">
               <Input
-                placeholder={'备注'}
+                placeholder={'如有必要，请输入备注'}
                 bordered={false}
                 value={text}
                 onChange={(e) => handleFieldChange(e, 'remarks', record.key)}
@@ -297,6 +339,7 @@ const TableForm: FC<TableFormProps> = ({value, onChange}) => {
     },
     {
       className: 'column_domain',
+      width: '20%',
       title: () => (
         <Button
           type="primary"
@@ -335,15 +378,9 @@ const TableForm: FC<TableFormProps> = ({value, onChange}) => {
         return (
           <span>
             {/*<a onClick={(e) => toggleEditable(e, record.key)}>编辑</a>*/}
-            <Select
-              bordered={false}
-              placeholder={"导入域"}
-              size={"small"}
-              id={"select"}
-              style={{width: '60%'}}
-              onClick={(e) => clean(e, record.key)}>
-              <Option value="String" >清空</Option>
-              <Option value="long">long</Option>
+            <Select bordered={false} placeholder={"导入域"} size={"small"} id={"select"} style={{width: '60%'}}
+              /*  onChange={(e) => clean(e, record.key)}*/>
+              <Option value="String" onClick={(e: SelectValue) => clean(e, record.key)}>清空</Option>
             </Select>
             <Popconfirm title="是否要删除此行？" onConfirm={() => remove(record.key)}>
                       <Button type="primary">删除</Button>
@@ -394,13 +431,15 @@ const TableForm: FC<TableFormProps> = ({value, onChange}) => {
         },*/
   ];
 
+  // @ts-ignore
   return (
     <>
-      <Table<TableFormDateType>
+      <Table
         loading={loading}
         columns={columns}
         dataSource={data}
         pagination={false}
+        rowSelection={rowSelection}  //列表选择框
         rowClassName={(record) => (record.editable ? styles.editable : '')}
       />
       {/*  <Button

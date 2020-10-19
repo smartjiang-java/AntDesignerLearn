@@ -1,0 +1,34 @@
+@import '~antd/lib/style/themes/default.less';
+@import '~@/utils/utils.less';
+
+.globalBackground {
+  //width: 1620px;
+  //height: 900px;
+  margin-right: auto;
+  margin-left: auto;
+  background-color: white;
+}
+
+.innerCode {
+  width: calc(100% - 100px);
+}
+
+.selfSelection {
+  width: 100%;
+  border: 0;
+  outline-width: 0;
+}
+.innerCard {
+  :global {
+    .ant-card-body {
+      padding: 0;
+    }
+  }
+}
+.innerSelect {
+  :global {
+    .ant-select-selection--single {
+      border: 0;
+    }
+  }
+}

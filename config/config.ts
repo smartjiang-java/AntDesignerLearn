@@ -95,10 +95,22 @@ export default defineConfig({
               component: './demo/cases',
             },
             {
-              name: '接口参数',
+              name: 'InterfaceParameters',
               icon: 'table',
               path: '/formadvancedform',
               component: './InterfaceParameters',
+            },
+            {
+              name: 'demo2',
+              icon: 'table',
+              path: '/demo2',
+              component: './demo2',
+            },
+            {
+              name: '空白页面',
+              icon: 'smile',
+              path: '/domain',
+              component: './Domain',
             },
             {
               component: './404',
