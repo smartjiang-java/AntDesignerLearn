@@ -21,6 +21,7 @@ const columns = [
     key: 'description',
     width: '10%',
   },
+  
   {
     title: '必填',
     key: 'necessaryStr',
