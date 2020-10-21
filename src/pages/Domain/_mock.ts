@@ -11,6 +11,7 @@ const names = [
   'Vue',
   'Webpack',
 ];
+
 const types = [
 'string',
   'int',
@@ -57,10 +58,9 @@ const codes=[
   'utf-8',
 ];
 
-
-
-function fakeList(count: number): BasicListItemDataType[] {
+function fakeList(this: any, count: number): BasicListItemDataType[] {
   const list = [];
+
   for (let i = 0; i < count; i += 1) {
     list.push({
       id: `fake-list-${i}`,
@@ -70,7 +70,13 @@ function fakeList(count: number): BasicListItemDataType[] {
       description:descs[i%8],
       necessaryStr: necessaryStrs[0],
       length: i+i*10,
+
       isolation:isolations[i%8],
+      publicUsers:'',
+      Project:'',
+      IsolationProject:'',
+      Module:'',
+      Package:'',
 
       cover: parseInt(`${i / 4}`, 10) % 2 === 0 ? covers[i % 4] : covers[3 - (i % 4)],
       status: ['active', 'exception', 'normal'][i % 3] as
@@ -87,12 +93,10 @@ function fakeList(count: number): BasicListItemDataType[] {
       newUser: Math.ceil(Math.random() * 1000) + 1000,
       star: Math.ceil(Math.random() * 100) + 100,
       like: Math.ceil(Math.random() * 100) + 100,
-      message: Math.ceil(Math.random() * 10) + 10,
-      content:
-        '段落示意：蚂蚁金服设计平台 ant.design，用最小的工作量，无缝接入蚂蚁金服生态，提供跨越设计与开发的体验解决方案。蚂蚁金服设计平台 ant.design，用最小的工作量，无缝接入蚂蚁金服生态，提供跨越设计与开发的体验解决方案。',
+      message: Math.ceil(Math.random() * 10) + 10
     });
-  }
 
+  }
   return list;
 }
 

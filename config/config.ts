@@ -107,22 +107,10 @@ export default defineConfig({
               component: './demo2',
             },
             {
-              name: '高级表单',
-              icon: 'smile',
-              path: '/高级表单',
-              component: './高级表单',
-            },
-            {
               name: '域管理',
               icon: 'smile',
               path: '/Domain',
               component: './Domain',
-            },
-            {
-              name: '标准列表',
-              icon: 'smile',
-              path: '/我的例子',
-              component: './我的例子',
             },
             {
               component: './404',

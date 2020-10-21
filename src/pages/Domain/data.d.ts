@@ -7,6 +7,11 @@ export interface BasicListItemDataType {
   necessaryStr: string;
   length :number;
   isolation:string;
+  publicUsers:string;
+  Project:string;
+  IsolationProject:string;
+  Module:string;
+  Package:string;
 
   cover: string;
   status: 'normal' | 'exception' | 'active' | 'success';
@@ -20,5 +25,4 @@ export interface BasicListItemDataType {
   star: number;
   like: number;
   message: number;
-  content: string;
 }

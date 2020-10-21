@@ -55,11 +55,15 @@ export const Domain: FC<DomainProps> = (props) => {
     setCurrent(undefined);
   };
 
+  //进行编辑
   const showEditModal = (item: BasicListItemDataType) => {
+    //console.log(item.isolation);
     setVisible(true);
     setCurrent(item);
+
   };
 
+  //进行删除
   const deleteItem = (id: string) => {
     dispatch({
       type: 'Domain/submit',
@@ -100,23 +104,29 @@ export const Domain: FC<DomainProps> = (props) => {
   const setAddBtnblur = () => {
     if (addBtn.current) {
       const addBtnDom = findDOMNode(addBtn.current) as HTMLButtonElement;
+      //.log(addBtnDom)
+
       setTimeout(() => addBtnDom.blur(), 0);
     }
   };
 
   const handleDone = () => {
     setAddBtnblur();
-
     setDone(false);
     setVisible(false);
   };
 
-  const handleCancel = () => {
+  //点击取消
+  const handleCancel = (item: BasicListItemDataType) => {
     setAddBtnblur();
     setVisible(false);
+
   };
 
+  //创建后提交
   const handleSubmit = (values: BasicListItemDataType) => {
+    //console.log(values.isolation);
+
     const ids = current ? current.id : '';
     setAddBtnblur();
     setDone(true);
