@@ -47,9 +47,6 @@ let options2 = [
   { value: '客户信息分析' }
   ];
 
-
-
-
 const OperationModal: FC<OperationModalProps> = (props) => {
   const [form] = Form.useForm();
 
@@ -103,6 +100,15 @@ const OperationModal: FC<OperationModalProps> = (props) => {
     }
   };
 
+  /*取消之后列表框恢复常态*/
+  const cancelAll =()=>{
+    setShowPublicUsers(false);
+    setShowProject(false);
+    setShowIsolationProject(false);
+    setShowModule(false);
+    setShowPackage(false);
+  }
+
 
   const modalFooter = done
     ? {footer: null, onCancel: onDone}
@@ -115,7 +121,6 @@ const OperationModal: FC<OperationModalProps> = (props) => {
         <Result
           status="success"
           title="操作成功"
-          subTitle="一系列的信息描述，很短同样也可以带标点。"
           extra={
             <Button type="primary" onClick={onDone}>
               知道了
@@ -131,6 +136,7 @@ const OperationModal: FC<OperationModalProps> = (props) => {
         {...formLayout}
         form={form}
         onFinish={handleFinish}
+        preserve={false}
         initialValues={{public: '1'}}
         onValuesChange={onValuesChange}>
         <FormItem
@@ -195,7 +201,7 @@ const OperationModal: FC<OperationModalProps> = (props) => {
           labelCol={{span: 5}} wrapperCol={{span: 15}}
           rules={[{required: true}]}
         >
-          <Radio.Group>
+          <Radio.Group >
             <Radio value="全局">
               全局
             </Radio>
@@ -276,8 +282,10 @@ const OperationModal: FC<OperationModalProps> = (props) => {
       className={styles.standardListForm}
       width={640}
       bodyStyle={done ? {padding: '72px 0'} : {padding: '28px 0 0'}}
-      destroyOnClose
+      destroyOnClose={true}
+      keyboard={true}
       visible={visible}
+      afterClose={cancelAll}
       {...modalFooter}
     >
       {getModalContent()}

@@ -57,10 +57,10 @@ export const Domain: FC<DomainProps> = (props) => {
 
   //进行编辑
   const showEditModal = (item: BasicListItemDataType) => {
-    //console.log(item.isolation);
     setVisible(true);
+    //console.log("点击编辑时的按钮id="+item.id)
+    handldata(item);
     setCurrent(item);
-
   };
 
   //进行删除
@@ -90,7 +90,7 @@ export const Domain: FC<DomainProps> = (props) => {
     <Dropdown
       overlay={
         <Menu onClick={({key}) => editAndDelete(key, item)}>
-         {/* <Menu.Item key="edit">编辑</Menu.Item>*/}
+           <Menu.Item key="edit">编辑</Menu.Item>
           <Menu.Item key="delete">删除</Menu.Item>
         </Menu>
       }
@@ -105,7 +105,6 @@ export const Domain: FC<DomainProps> = (props) => {
     if (addBtn.current) {
       const addBtnDom = findDOMNode(addBtn.current) as HTMLButtonElement;
       //.log(addBtnDom)
-
       setTimeout(() => addBtnDom.blur(), 0);
     }
   };
@@ -117,24 +116,48 @@ export const Domain: FC<DomainProps> = (props) => {
   };
 
   //点击取消
-  const handleCancel = (item: BasicListItemDataType) => {
+  const handleCancel = () => {
     setAddBtnblur();
     setVisible(false);
 
   };
 
-  //创建后提交
-  const handleSubmit = (values: BasicListItemDataType) => {
-    //console.log(values.isolation);
+  //传递隔离级别的值
+  const handldata = (values: BasicListItemDataType) => {
+    if (values.isolation == '项目组') {
+      values.isolation = values.isolation + '(' + values.publicUsers + ')';
+    }
+    if (values.isolation == '项目') {
+      values.isolation = values.isolation + '(' + values.Project + ')';
+      if (values.IsolationProject == '模块') {
+        values.isolation = values.isolation + '(' + values.IsolationProject + ')' + '(' + values.Module + ')';
+      }
+      if (values.IsolationProject == '包') {
+        values.isolation = values.isolation + '(' + values.IsolationProject + ')' + '(' + values.Package + ')';
+      }
+    }
+  }
 
-    const ids = current ? current.id : '';
-    setAddBtnblur();
-    setDone(true);
-    dispatch({
-      type: 'Domain/submit',
-      payload: {ids, ...values},
-    });
-  };
+
+  //创建后提交
+  const
+    handleSubmit = (values: BasicListItemDataType) => {
+      //console.log(values.isolation);
+      handldata(values);
+      const ids = current ? current.id : ''
+      setAddBtnblur();
+      setDone(true);
+     dispatch({
+        type: 'Domain/submit',
+        payload: {ids, ...values},
+      });
+     if(ids!=undefined){
+       deleteItem(ids);
+     }
+
+
+
+    }
 
   const columns = [
     {
@@ -178,7 +201,7 @@ export const Domain: FC<DomainProps> = (props) => {
       title: '操作',
       key: 'operate',
       width: '10%',
-      render: (item: BasicListItemDataType) => {
+     render: (item: BasicListItemDataType) => {
         return (
           <List.Item
             actions={[
@@ -200,6 +223,7 @@ export const Domain: FC<DomainProps> = (props) => {
     },
 
   ]
+  // @ts-ignore
   return (
     <div>
       <PageContainer>
