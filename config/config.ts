@@ -49,12 +49,12 @@ export default defineConfig({
               redirect: '/welcome',
             },
             {
+              name: 'HelloWorld',
               path: '/welcome',
-              name: 'welcome',
               icon: 'smile',
               component: './Welcome',
             },
-            {
+/*            {
               path: '/admin',
               name: 'admin',
               icon: 'crown',
@@ -69,39 +69,16 @@ export default defineConfig({
                   authority: ['admin'],
                 },
               ],
-            },
+            },*/
+
             {
-              name: 'list.table-list',
-              icon: 'table',
-              path: '/list',
-              component: './ListTableList',
-            },
-            {
-              path: '/module',
-              name: 'list.module-list',
-              icon: 'table',
-              component: './Module/module',
-            },
-            {
-              name: 'list.TestUnitTableList-list',
-              icon: 'table',
-              path: '/testUnitList',
-              component: './TestUnitTableList',
-            },
-            {
-              name: '测试用例',
-              icon: 'smile',
-              path: '/test/cases',
-              component: './demo/cases',
-            },
-            {
-              name: 'InterfaceParameters',
+              name: '接口参数',
               icon: 'table',
               path: '/formadvancedform',
               component: './InterfaceParameters',
             },
             {
-              name: 'demo2',
+              name: '组件学习',
               icon: 'table',
               path: '/demo2',
               component: './demo2',

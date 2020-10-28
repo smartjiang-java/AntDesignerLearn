@@ -108,7 +108,8 @@
     "pro-download": "1.0.1",
     "puppeteer-core": "^5.0.0",
     "stylelint": "^13.0.0",
-    "typescript": "^3.9.7"
+    "typescript": "^3.9.7",
+    "umi": "^3.2.24"
   },
   "engines": {
     "node": ">=10.0.0"
