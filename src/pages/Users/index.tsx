@@ -64,11 +64,12 @@ const index = ({ users }) => {
   )
 };
 
-//参数是一个对象,里面的users对应model层的namespace
-const mapStateToProps = ({ users }) => {
+//参数是一个对象state,里面有一个users,router,loading以及其他属性 state={users,router,loading}
+// 里面的users对应model层的namespace
+const mapStateToProps = ({users}) => {
   return {
     users,
-  }
+  };
 };
 
 //reduces连接方法
