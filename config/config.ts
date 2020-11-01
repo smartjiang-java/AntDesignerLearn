@@ -90,6 +90,12 @@ export default defineConfig({
               component: './Domain',
             },
             {
+              name: '搭建学习',
+              icon: 'smile',
+              path: '/Users',
+              component: './Users',
+            },
+            {
               component: './404',
             },
           ],

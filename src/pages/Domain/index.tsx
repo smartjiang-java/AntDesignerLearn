@@ -1,5 +1,5 @@
-import React, {FC, useRef, useState, useEffect} from 'react';
-import {DownOutlined, PlusOutlined} from '@ant-design/icons';
+import React, { FC, useRef, useState, useEffect } from 'react';
+import { DownOutlined, PlusOutlined } from '@ant-design/icons';
 import {
   Button,
   Card,
@@ -9,12 +9,12 @@ import {
   Modal, Table,
 } from 'antd';
 
-import {findDOMNode} from 'react-dom';
-import {PageContainer} from '@ant-design/pro-layout';
-import {connect, Dispatch} from 'umi';
+import { findDOMNode } from 'react-dom';
+import { PageContainer } from '@ant-design/pro-layout';
+import { connect, Dispatch } from 'umi';
 import OperationModal from './components/OperationModal';
-import {StateType} from './model';
-import {BasicListItemDataType} from './data.d';
+import { StateType } from './model';
+import { BasicListItemDataType } from './data.d';
 import styles from './style.less';
 
 interface DomainProps {
@@ -28,7 +28,7 @@ export const Domain: FC<DomainProps> = (props) => {
   const {
     loading,
     dispatch,
-    Domain: {list},
+    Domain: { list },
   } = props;
   const [done, setDone] = useState<boolean>(false);
   const [visible, setVisible] = useState<boolean>(false);
@@ -67,7 +67,7 @@ export const Domain: FC<DomainProps> = (props) => {
   const deleteItem = (id: string) => {
     dispatch({
       type: 'Domain/submit',
-      payload: {id},
+      payload: { id },
     });
   };
 
@@ -86,17 +86,17 @@ export const Domain: FC<DomainProps> = (props) => {
 
   const MoreBtn: React.FC<{
     item: BasicListItemDataType;
-  }> = ({item}) => (
+  }> = ({ item }) => (
     <Dropdown
       overlay={
-        <Menu onClick={({key}) => editAndDelete(key, item)}>
-           <Menu.Item key="edit">编辑</Menu.Item>
+        <Menu onClick={({ key }) => editAndDelete(key, item)}>
+          <Menu.Item key="edit">编辑</Menu.Item>
           <Menu.Item key="delete">删除</Menu.Item>
         </Menu>
       }
     >
       <a>
-        更多 <DownOutlined/>
+        更多 <DownOutlined />
       </a>
     </Dropdown>
   );
@@ -142,21 +142,14 @@ export const Domain: FC<DomainProps> = (props) => {
   //创建后提交
   const
     handleSubmit = (values: BasicListItemDataType) => {
-      //console.log(values.isolation);
       handldata(values);
       const ids = current ? current.id : ''
       setAddBtnblur();
       setDone(true);
-     dispatch({
+      dispatch({
         type: 'Domain/submit',
-        payload: {ids, ...values},
+        payload: { ids, ...values },
       });
-     if(ids!=undefined){
-       deleteItem(ids);
-     }
-
-
-
     }
 
   const columns = [
@@ -201,7 +194,7 @@ export const Domain: FC<DomainProps> = (props) => {
       title: '操作',
       key: 'operate',
       width: '10%',
-     render: (item: BasicListItemDataType) => {
+      render: (item: BasicListItemDataType) => {
         return (
           <List.Item
             actions={[
@@ -214,7 +207,7 @@ export const Domain: FC<DomainProps> = (props) => {
               >
                 编辑
               </a>,
-              <MoreBtn key="more" item={item}/>,
+              <MoreBtn key="more" item={item} />,
             ]}
           >
           </List.Item>
@@ -234,7 +227,7 @@ export const Domain: FC<DomainProps> = (props) => {
               onClick={showModal}
               ref={addBtn}
             >
-              <PlusOutlined/>
+              <PlusOutlined />
               创建域
             </Button>
             <Table
@@ -263,9 +256,9 @@ export const Domain: FC<DomainProps> = (props) => {
 
 export default connect(
   ({
-     Domain,
-     loading,
-   }: {
+    Domain,
+    loading,
+  }: {
     Domain: StateType;
     loading: {
       models: { [key: string]: boolean };
