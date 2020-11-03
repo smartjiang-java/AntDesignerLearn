@@ -1,8 +1,7 @@
 import {Reducer, Effect, Subscription} from "umi";
-import {getRemoteList} from './service';
 
 /**
- *监听--->Effort---->service--->传给Reducer,Reducer再传数据到index页面   异步
+ *监听--->Effort先传给Reducer,Reducer再传数据到index页面   异步
  */
 interface UserModelTypes {
   namespace: "users";
@@ -32,25 +31,44 @@ const UserModel: UserModelTypes = {
    */
   reducers: {
     //action中的type经常用不上,常省略
-    /*    getList(state, action) {
-          return action.payload;
-        }*/
+/*    getList(state, action) {
+      return action.payload;
+    }*/
     getList(state, {payload}) {
       return payload;
     }
   },
 
   //effects里面的函数要加*号,用 yield put找reducers,里面没有返回值
-  //effects={put,call}
+  //effects={put,call}  这里的call也是经常用不上
   effects: {
-    * getRemote(action, {put, call}) {
-      const data = yield call(getRemoteList);
+    * getRemote(action, {put}) {
+      const data = [
+        {
+          key: '1',
+          name: 'John Brown',
+          age: 32,
+          address: 'New York No. 1 Lake Park',
+          tags: ['nice', 'developer'],
+        },
+        {
+          key: '2',
+          name: 'Jim Green',
+          age: 42,
+          address: 'London No. 1 Lake Park',
+          tags: ['loser'],
+        },
+        {
+          key: '3',
+          name: 'Joe Black',
+          age: 32,
+          address: 'Sidney No. 1 Lake Park',
+          tags: ['cool', 'teacher'],
+        },
+      ];
       yield put({
-        type: 'getList',
-        payload: data,
-/*        payload :{
-          data
-        }*/
+        type:'getList',
+        payload:data,
       });
     },
   },
