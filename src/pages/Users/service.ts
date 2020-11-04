@@ -28,16 +28,14 @@
   return data;
 }*/
 
-
 //接收真实的后端数据
-import {request} from 'umi';
+import { request } from 'umi';
 
 export const getRemoteList = async (params: any) => {
-
   //注意:这里的两个return都要写
   return request('http://public-api-v1.aspirantzhang.com/users', {
     method: 'get',
-    /* params: { id: 1 },*/      //参数,这里没有参数
+    /* params: { id: 1 },*/ //参数,这里没有参数
   })
     .then(function (response) {
       //console.log(response);
@@ -46,9 +44,10 @@ export const getRemoteList = async (params: any) => {
     .catch(function (error) {
       console.log(error);
     });
+};
 
-  //注意:返回的对象格式类似于下面这样
-  /*
+//注意:返回的对象格式类似于下面这样
+/*
     {
       "data": [
       {
@@ -75,5 +74,3 @@ export const getRemoteList = async (params: any) => {
     }
     }
     */
-
-}
